@@ -328,3 +328,119 @@ Example:
     "message": "Internal Server Error"
   }
   ```
+
+
+  ## Captain Endpoints
+
+### Endpoint: `/captains/login`
+
+#### Method: POST
+
+#### Description:
+This endpoint is used to log in an existing captain. It validates the input data and checks the captain's credentials.
+
+#### Request Body:
+The request body must be a JSON object containing the following fields:
+
+- `email`: The captain's email address (required, must be a valid email).
+- `password`: The captain's password (required, minimum 5 characters).
+
+Example:
+```json
+{
+  "email": "jane.doe@example.com",
+  "password": "password123"
+}
+```
+
+#### Responses:
+
+##### Success (200 OK):
+- **Description**: Captain successfully logged in.
+- **Body**:
+  ```json
+  {
+    "token": "jwt_token",
+    "captain": {
+      "_id": "captain_id",
+      "fullname": {
+        "firstname": "Jane",
+        "lastname": "Doe"
+      },
+      "email": "jane.doe@example.com",
+      "vehicle": {
+        "color": "Red",
+        "plate": "XYZ123",
+        "capacity": 4,
+        "vehicleType": "car"
+      }
+    }
+  }
+  ```
+
+##### Client Error (400 Bad Request):
+- **Description**: Validation failed or missing required fields.
+- **Body**:
+  ```json
+  {
+    "errors": [
+      {
+        "msg": "Please enter a valid email address",
+        "param": "email",
+        "location": "body"
+      },
+      {
+        "msg": "Password must be at least 5 characters long",
+        "param": "password",
+        "location": "body"
+      }
+    ]
+  }
+  ```
+
+##### Client Error (401 Unauthorized):
+- **Description**: Invalid email or password.
+- **Body**:
+  ```json
+  {
+    "message": "Invalid email or password"
+  }
+  ```
+
+##### Server Error (500 Internal Server Error):
+- **Description**: An error occurred on the server.
+- **Body**:
+  ```json
+  {
+    "success": false,
+    "message": "Internal Server Error"
+  }
+  ```
+
+### Endpoint: `/captains/logout`
+
+#### Method: GET
+
+#### Description:
+This endpoint is used to log out an authenticated captain. It clears the authentication token from cookies and adds it to a blacklist.
+
+#### Responses:
+
+##### Success (200 OK):
+- **Description**: Captain successfully logged out.
+- **Body**:
+  ```json
+  {
+    "message": "Logged out successfully"
+  }
+  ```
+
+##### Server Error (500 Internal Server Error):
+- **Description**: An error occurred on the server.
+- **Body**:
+  ```json
+  {
+    "success": false,
+    "message": "Internal Server Error"
+  }
+  ```
