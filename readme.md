@@ -195,3 +195,136 @@ This endpoint is used to log out an authenticated user. It clears the authentica
     "message": "Internal Server Error"
   }
   ```
+
+## Captain Endpoints
+
+### Endpoint: `/captains/register`
+
+#### Method: POST
+
+#### Description:
+This endpoint is used to register a new captain. It validates the input data and creates a new captain in the database.
+
+#### Request Body:
+The request body must be a JSON object containing the following fields:
+
+- `fullname`: An object containing the captain's full name.
+  - `firstname`: The captain's first name (required, minimum 3 characters).
+  - `lastname`: The captain's last name (required, minimum 3 characters).
+- `email`: The captain's email address (required, must be a valid email).
+- `password`: The captain's password (required, minimum 5 characters).
+- `vehicle`: An object containing the vehicle details.
+  - `color`: The vehicle's color (required, minimum 3 characters).
+  - `plate`: The vehicle's plate number (required, minimum 3 characters).
+  - `capacity`: The vehicle's capacity (required, minimum 1).
+  - `vehicleType`: The vehicle's type (required, must be one of 'car', 'motorcycle', 'auto').
+
+Example:
+```json
+{
+  "fullname": {
+    "firstname": "Jane",
+    "lastname": "Doe"
+  },
+  "email": "jane.doe@example.com",
+  "password": "password123",
+  "vehicle": {
+    "color": "Red",
+    "plate": "XYZ123",
+    "capacity": 4,
+    "vehicleType": "car"
+  }
+}
+```
+
+#### Responses:
+
+##### Success (201 Created):
+- **Description**: Captain successfully registered.
+- **Body**:
+  ```json
+  {
+    "token": "jwt_token",
+    "captain": {
+      "_id": "captain_id",
+      "fullname": {
+        "firstname": "Jane",
+        "lastname": "Doe"
+      },
+      "email": "jane.doe@example.com",
+      "vehicle": {
+        "color": "Red",
+        "plate": "XYZ123",
+        "capacity": 4,
+        "vehicleType": "car"
+      }
+    }
+  }
+  ```
+
+##### Client Error (400 Bad Request):
+- **Description**: Validation failed or missing required fields.
+- **Body**:
+  ```json
+  {
+    "success": false,
+    "message": "All fields are required"
+  }
+  ```
+  or
+  ```json
+  {
+    "errors": [
+      {
+        "msg": "First name must be at least 3 characters long",
+        "param": "fullname.firstname",
+        "location": "body"
+      },
+      {
+        "msg": "Last name must be at least 3 characters long",
+        "param": "fullname.lastname",
+        "location": "body"
+      },
+      {
+        "msg": "Please enter a valid email address",
+        "param": "email",
+        "location": "body"
+      },
+      {
+        "msg": "Password must be at least 5 characters long",
+        "param": "password",
+        "location": "body"
+      },
+      {
+        "msg": "Color must be at least 3 characters long",
+        "param": "vehicle.color",
+        "location": "body"
+      },
+      {
+        "msg": "Plate must be at least 3 characters long",
+        "param": "vehicle.plate",
+        "location": "body"
+      },
+      {
+        "msg": "Capacity must be at least 1",
+        "param": "vehicle.capacity",
+        "location": "body"
+      },
+      {
+        "msg": "Invalid vehicle type",
+        "param": "vehicle.vehicleType",
+        "location": "body"
+      }
+    ]
+  }
+  ```
+
+##### Server Error (500 Internal Server Error):
+- **Description**: An error occurred on the server.
+- **Body**:
+  ```json
+  {
+    "success": false,
+    "message": "Internal Server Error"
+  }
+  ```
