@@ -11,6 +11,8 @@ const Home = () => {
   const [panelOpen, setPanelOpen] = useState(false);
   const panelRef = useRef(null);
   const panelCloseRef = useRef(null);
+  const [vehiclePanel, setVehiclePanel] = useState(false);
+  const vehiclePanelRef = useRef(null);
 
 
   const submitHandler = ()=>{
@@ -43,11 +45,41 @@ const Home = () => {
     }
   },[panelOpen, panelCloseRef])
 
+  // useGSAP(function(){
+  //   if(vehiclePanel){
+  //     gsap.to(vehiclePanelRef.current, {
+  //       transform:'translateY-0',
+
+  //     })
+  //   } 
+  //   else{
+  //     gsap.to(vehiclePanelRef.current, {
+  //       transform:'translateY(100%)'
+  //     })
+  //   }
+  // },[vehiclePanel])
+
+  useGSAP(() => {
+    if (vehiclePanel) {
+      gsap.to(vehiclePanelRef.current, {
+        y: '0%',  // Corrected GSAP property
+        duration: 0.5,
+        ease: 'power2.out',
+      });
+    } else {
+      gsap.to(vehiclePanelRef.current, {
+        y: '100%',  // Corrected GSAP property
+        duration: 0.5,
+        ease: 'power2.in',
+      });
+    }
+  }, [vehiclePanel]);
+
 
 
   return (
     <div className='h-screen relative overflow-hidden'>
-        <img className='w-40 mb-10 absolute left-5 top-5' src="https://mobilityservice.se/resources/logo%20mobility%20service.png" alt="" />
+        <img className='w-16 absolute left-5 top-5' src="https://mobilityservice.se/resources/logo%20mobility%20service.png" alt="" />
         <div className='w-screen h-screen'>
           {/* Image for temporary use  */}
           <img className='w-screen h-screen object-cover' 
@@ -89,14 +121,15 @@ const Home = () => {
             </form>
           </div>
           <div ref={panelRef} className=' bg-white p-5 '> 
-              <LocationSearchPanel/>
+              <LocationSearchPanel setPanelOpen={setPanelOpen} setVehiclePanel={setVehiclePanel}/>
           </div>
         </div>
 
-        <div className='fixed w-full z-10 bottom-0 bg-white px-3 py-8'>
+        <div ref={vehiclePanelRef} className='fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-8'>
+          <h5 className='p-3 w-full text-center absolute top-0'><i className='ri-arrow-down-wide-line'></i> </h5>
           <h3 className='text-2xl font-semibold mb-3'>Choose a Vehicle</h3>
 
-              <div className='flex border-2 active:border-black mb-2 rounded-xl w-full p-3 items-center justify-between'>
+              <div className='flex border-2 border-gray-200 active:border-black mb-2 rounded-xl w-full p-3 items-center justify-between'>
                 <img className='h-14' src="https://purepng.com/public/uploads/large/purepng.com-hyundai-santa-fe-white-carcarvehicletransporthyundai-961524650727bljaq.png" alt="" />
                 <div className='ml-2 w-1/2'>
                   <h4 className='font-medium text-base'>Uber Go <span><i className="ri-user-3-fill"></i>4</span></h4>
@@ -106,7 +139,7 @@ const Home = () => {
                 <h2 className='text-xl font-semibold'>$193.20</h2>
               </div>
 
-              <div className='flex border-2 active:border-black mb-2 rounded-xl w-full p-3 items-center justify-between'>
+              <div className='flex border-2 border-gray-200 active:border-black mb-2 rounded-xl w-full p-3 items-center justify-between'>
                 <img className='h-14 w-16' src="https://static.vecteezy.com/system/resources/previews/024/819/250/large_2x/electric-motorbike-electric-bike-e-bike-e-motorbike-electric-vehicle-e-vehicle-transparent-background-ai-generated-png.png" alt="" />
                 <div className='ml-2 w-1/2'>
                   <h4 className='font-medium text-base'>Uber Bike <span><i className="ri-user-3-fill"></i>1</span></h4>
@@ -116,7 +149,7 @@ const Home = () => {
                 <h2 className='text-xl font-semibold'>$10.20</h2>
               </div>
 
-              <div className='flex border-2 active:border-black mb-2 rounded-xl w-full p-3 items-center justify-between'>
+              <div className='flex border-2 border-gray-200 active:border-black mb-2 rounded-xl w-full p-3 items-center justify-between'>
                 <img className='h-14' src="https://clipart-library.com/2023/Uber_Auto_312x208_pixels_Mobile.png" alt="" />
                 <div className='ml-2 w-1/2'>
                   <h4 className='font-medium text-base'>Uber Auto <span><i className="ri-user-3-fill"></i>1</span></h4>
