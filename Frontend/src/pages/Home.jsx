@@ -3,6 +3,10 @@ import {useGSAP} from '@gsap/react'
 import gsap from 'gsap'
 import 'remixicon/fonts/remixicon.css'
 import LocationSearchPanel from '../components/LocationSearchPanel'
+import VehiclePanel from '../components/VehiclePanel'
+import ConfirmRide from '../components/ConfirmRide'
+import LookingForDriver from '../components/LookingForDriver'
+import WaitingForDriver from '../components/WaitingForDriver'
 
 const Home = () => {
 
@@ -13,6 +17,12 @@ const Home = () => {
   const panelCloseRef = useRef(null);
   const [vehiclePanel, setVehiclePanel] = useState(false);
   const vehiclePanelRef = useRef(null);
+  const [confirmRidePanel, setConfirmRidePanel] = useState(false);
+  const confirmRidePanelRef = useRef(null);
+  const [vehicleFound, setVehicleFound] = useState(false)
+  const vehicleFoundRef = useRef(null)
+  const [waitingForDriver, setWaitingForDriver] = useState(false)
+  const waitingForDriverRef = useRef(null)
 
 
   const submitHandler = ()=>{
@@ -75,6 +85,54 @@ const Home = () => {
     }
   }, [vehiclePanel]);
 
+  useGSAP(() => {
+    if (confirmRidePanel) {
+      gsap.to(confirmRidePanelRef.current, {
+        y: '0%',  // Corrected GSAP property
+        duration: 0.5,
+        ease: 'power2.out',
+      });
+    } else {
+      gsap.to(confirmRidePanelRef.current, {
+        y: '100%',  // Corrected GSAP property
+        duration: 0.5,
+        ease: 'power2.in',
+      });
+    }
+  }, [confirmRidePanel]);
+
+  useGSAP(() => {
+    if (vehicleFound) {
+      gsap.to(vehicleFoundRef.current, {
+        y: '0%',  // Corrected GSAP property
+        duration: 0.5,
+        ease: 'power2.out',
+      });
+    } else {
+      gsap.to(vehicleFoundRef.current, {
+        y: '100%',  // Corrected GSAP property
+        duration: 0.5,
+        ease: 'power2.in',
+      });
+    }
+  }, [vehicleFound]);
+
+  useGSAP(() => {
+    if (waitingForDriver) {
+      gsap.to(waitingForDriverRef.current, {
+        y: '0%',  // Corrected GSAP property
+        duration: 0.5,
+        ease: 'power2.out',
+      });
+    } else {
+      gsap.to(waitingForDriverRef.current, {
+        y: '100%',  // Corrected GSAP property
+        duration: 0.5,
+        ease: 'power2.in',
+      });
+    }
+  }, [waitingForDriver]);
+
 
 
   return (
@@ -125,39 +183,20 @@ const Home = () => {
           </div>
         </div>
 
-        <div ref={vehiclePanelRef} className='fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-8'>
-          <h5 className='p-3 w-full text-center absolute top-0'><i className='ri-arrow-down-wide-line'></i> </h5>
-          <h3 className='text-2xl font-semibold mb-3'>Choose a Vehicle</h3>
+        <div ref={vehiclePanelRef} className='fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-10 pt-14'>
+          <VehiclePanel setConfirmRidePanel={setConfirmRidePanel} setVehiclePanel={setVehiclePanel}/>
+        </div>
 
-              <div className='flex border-2 border-gray-200 active:border-black mb-2 rounded-xl w-full p-3 items-center justify-between'>
-                <img className='h-14' src="https://purepng.com/public/uploads/large/purepng.com-hyundai-santa-fe-white-carcarvehicletransporthyundai-961524650727bljaq.png" alt="" />
-                <div className='ml-2 w-1/2'>
-                  <h4 className='font-medium text-base'>Uber Go <span><i className="ri-user-3-fill"></i>4</span></h4>
-                  <h5 className='font-medium text-sm'> 2 mins away </h5>
-                  <p className='font-normal text-xs'>Affordable, compact rides</p>
-                </div>
-                <h2 className='text-xl font-semibold'>$193.20</h2>
-              </div>
+        <div ref={confirmRidePanelRef} className='fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-10 pt-14'>
+          <ConfirmRide setConfirmRidePanel={setConfirmRidePanel} />
+        </div>
 
-              <div className='flex border-2 border-gray-200 active:border-black mb-2 rounded-xl w-full p-3 items-center justify-between'>
-                <img className='h-14 w-16' src="https://static.vecteezy.com/system/resources/previews/024/819/250/large_2x/electric-motorbike-electric-bike-e-bike-e-motorbike-electric-vehicle-e-vehicle-transparent-background-ai-generated-png.png" alt="" />
-                <div className='ml-2 w-1/2'>
-                  <h4 className='font-medium text-base'>Uber Bike <span><i className="ri-user-3-fill"></i>1</span></h4>
-                  <h5 className='font-medium text-sm'> 2 mins away </h5>
-                  <p className='font-normal text-xs'>Affordable, bike rides</p>
-                </div>
-                <h2 className='text-xl font-semibold'>$10.20</h2>
-              </div>
+        <div ref={vehicleFoundRef} className='fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-10 pt-14'>
+          <LookingForDriver setVehicleFound={setVehicleFound}/>
+        </div>
 
-              <div className='flex border-2 border-gray-200 active:border-black mb-2 rounded-xl w-full p-3 items-center justify-between'>
-                <img className='h-14' src="https://clipart-library.com/2023/Uber_Auto_312x208_pixels_Mobile.png" alt="" />
-                <div className='ml-2 w-1/2'>
-                  <h4 className='font-medium text-base'>Uber Auto <span><i className="ri-user-3-fill"></i>1</span></h4>
-                  <h5 className='font-medium text-sm'> 2 mins away </h5>
-                  <p className='font-normal text-xs'>Affordable, auto rides</p>
-                </div>
-                <h2 className='text-xl font-semibold'>$200.20</h2>
-              </div>
+        <div ref={waitingForDriverRef} className='fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-10 pt-14'>
+          <WaitingForDriver waitingForDriver={waitingForDriver}  />
         </div>
 
     </div>
